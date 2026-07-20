@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
+
+# Python testing
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
+
+# Data
+data/*.nc
+
+# Node
+node_modules/
+
+# Frontend
+frontend/dist/
