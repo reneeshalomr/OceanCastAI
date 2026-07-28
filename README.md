@@ -1,69 +1,224 @@
 # 🌊 OceanCastAI
 
-OceanCastAI is an AI-powered web application for exploring global Sea Surface Temperature (SST) data using satellite observations and machine learning.
+An AI-powered full-stack web application for exploring and forecasting global Sea Surface Temperature (SST) using satellite observations, machine learning, and interactive geospatial visualization.
+
+OceanCastAI enables users to explore ocean temperature patterns, analyze anomalies, visualize historical trends, and generate AI-based forecasts through an intuitive web interface.
+
+---
 
 ## Features
 
-- 🌍 Interactive world map
-- 📍 Click any location to retrieve SST
-- 📈 Monthly SST trend visualization
-- 🤖 AI SST forecasting using Random Forest
-- 🌡 SST anomaly analysis
-- 📊 Model performance metrics
-- 📅 Multi-year dataset support
-- ⚡ FastAPI backend
-- ⚛ React + Material UI frontend
+- 🌍 Interactive global map using Leaflet
+- 📍 Click any ocean location to retrieve SST measurements
+- 📈 Monthly SST time-series visualization
+- 🤖 AI-powered SST forecasting with Random Forest Regression
+- 🌡 Sea Surface Temperature anomaly analysis
+- 📊 Machine learning model performance metrics
+- 📅 Multi-year SST dataset selection
+- ⚡ FastAPI REST API backend
+- 🎨 Responsive React + Material UI interface
 
-## Tech Stack
+---
+
+## Architecture
+
+```
+                 Satellite SST Data (.nc)
+                           │
+                           ▼
+                  FastAPI Backend (Python)
+                           │
+      ┌────────────────────┼───────────────────┐
+      ▼                    ▼                   ▼
+ SST Retrieval      AI Forecasting      Anomaly Analysis
+      │                    │                   │
+      └────────────────────┼───────────────────┘
+                           ▼
+                   React Frontend Dashboard
+                           │
+                           ▼
+              Interactive Visualization
+```
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- React
+- Material UI
+- React Leaflet
+- Recharts
+- JavaScript
+- Vite
 
 ### Backend
+
 - FastAPI
+- Python
 - Xarray
 - NumPy
 - Pandas
 - Scikit-learn
 
-### Frontend
-- React
-- Material UI
-- Recharts
-- React Leaflet
+### Machine Learning
 
-## Machine Learning
+- Random Forest Regressor
+- Feature Engineering
+- Historical SST Prediction
 
-Random Forest Regressor trained on historical SST observations using:
+---
+
+## Machine Learning Model
+
+The forecasting model was trained using historical Sea Surface Temperature observations.
+
+### Input Features
 
 - Year
 - Month
 - Latitude
 - Longitude
 
-Outputs:
+### Model Outputs
 
-- Forecast SST
-- Trend
-- Confidence
+- Forecasted SST
+- Temperature Trend
+- Prediction Confidence
+
+---
+
+## Project Structure
+
+```
+OceanCastAI
+│
+├── backend
+│   ├── api
+│   ├── models
+│   ├── services
+│   └── app.py
+│
+├── frontend
+│   ├── components
+│   ├── pages
+│   ├── services
+│   └── assets
+│
+├── ml
+│   ├── train_model.py
+│   ├── predict.py
+│   └── evaluate_model.py
+│
+└── docs
+```
+
+---
 
 ## Screenshots
 
-(Add screenshots here)
+### OceanCastAI Dashboard
 
-## Running
+Interactive SST exploration with geospatial selection, current sea surface temperature, AI forecasting, and anomaly analysis.
 
-Backend
+![OceanCastAI Dashboard](docs/screenshots/dashboard.png)
+
+### AI Forecasting & Analysis
+
+Random Forest SST forecasting, anomaly statistics, and model performance metrics.
+
+![AI Forecast](docs/screenshots/forecast.png)
+
+### Monthly Sea Surface Temperature
+
+Interactive 12-month SST time-series visualization.
+
+![Monthly SST Chart](docs/screenshots/chart.png)
+
+### FastAPI Backend
+
+REST API supporting SST queries, time series, anomaly analysis, forecasting, dataset management, and model metrics.
+
+![OceanCastAI FastAPI](docs/screenshots/api.png)
+
+
+
+### Dashboard
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Interactive Map
+
+![Map](docs/screenshots/map.png)
+
+### AI Forecast
+
+![Forecast](docs/screenshots/forecast.png)
+
+### SST Trend
+
+![Chart](docs/screenshots/chart.png)
+
+---
+
+## Running Locally
+
+### Clone the repository
 
 ```bash
+git clone https://github.com/reneeshalomr/OceanCastAI.git
+
+cd OceanCastAI
+```
+
+### Backend
+
+```bash
+pip install -r requirements.txt
+
 uvicorn backend.app.main:app --reload
 ```
 
-Frontend
+### Frontend
 
 ```bash
 cd frontend
+
 npm install
+
 npm run dev
 ```
 
+The frontend will be available at:
+
+```
+http://localhost:5173
+```
+
+The API will be available at:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## Future Improvements
+
+- SST heatmap visualization
+- Monthly forecast chart
+- Multi-year dataset comparison
+- Docker deployment
+- Cloud deployment
+- User-uploaded datasets
+
+---
+
 ## Author
 
-Renee
+**Renee Shalom**
+
+Computer Science • Artificial Intelligence • Ocean Data Science
+
+GitHub: https://github.com/reneeshalomr
