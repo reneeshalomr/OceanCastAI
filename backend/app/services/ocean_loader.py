@@ -2,7 +2,9 @@ from pathlib import Path
 import xarray as xr
 
 
-DATA_FOLDER = Path("data")
+BASE_DIR = Path(__file__).resolve().parents[2]
+
+DATA_FOLDER = BASE_DIR / "data"
 
 
 def list_datasets():
@@ -60,9 +62,11 @@ def get_sst_point(
         .values
     )
 
+    print("Raw SST value:", value)
+
     ds.close()
 
-    celsius = float(value - 273.15)
+    celsius = float(value)
 
     return {
         "dataset": filename,
@@ -83,7 +87,7 @@ def get_sst_timeseries(filename: str, lat: float, lon: float):
 
     ds.close()
 
-    sst_celsius = (sst - 273.15).round(2)
+    sst_celsius = sst.round(2)
 
     return {
         "dataset": filename,

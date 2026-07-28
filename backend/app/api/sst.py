@@ -78,3 +78,106 @@ def sst_timeseries(
             status_code=404,
             detail=str(e)
         )
+@router.get(
+    "/sst/{filename}/grid"
+)
+def sst_grid(filename: str):
+
+    try:
+        from backend.app.services.ocean_loader import load_dataset
+
+        ds = load_dataset(filename)
+
+        import numpy as np
+
+        sst = (
+            ds["analysed_sst"]
+            .isel(month=0)
+            .values
+        )
+
+        sst = np.nan_to_num(
+            sst,
+            nan=-999
+        )
+
+        lat = ds["lat"].values
+        lon = ds["lon"].values
+
+        ds.close()
+
+        return {
+            "dataset": filename,
+            "month": 1,
+            "lat": lat.tolist(),
+            "lon": lon.tolist(),
+            "sst": sst.tolist()
+        }
+
+
+    except FileNotFoundError as e:
+
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )        
+        
+@router.get(
+    "/sst/{filename}/anomaly"
+)
+def sst_anomaly(filename: str):
+
+    try:
+        from backend.app.services.ocean_loader import load_dataset
+        import numpy as np
+
+        ds = load_dataset(filename)
+
+        sst = (
+            ds["analysed_sst"]
+            .isel(month=0)
+            .values[::20, ::20]
+        )
+
+        mean_sst = np.nanmean(sst)
+
+        anomaly = sst - mean_sst
+
+        anomaly = np.nan_to_num(
+            anomaly,
+            nan=0
+        )
+
+        lat = ds["lat"].values[::20]
+        lon = ds["lon"].values[::20]
+
+        ds.close()
+
+        return {
+            "dataset": filename,
+            "mean_sst": round(float(mean_sst), 2),
+
+            "min_anomaly": round(
+                float(np.nanmin(anomaly)),
+                2
+            ),
+
+            "max_anomaly": round(
+                float(np.nanmax(anomaly)),
+                2
+            ),
+
+            "average_anomaly": round(
+                float(np.nanmean(anomaly)),
+                2
+            ),
+
+            "message": "Anomaly statistics calculated successfully"
+        }
+
+    except FileNotFoundError as e:
+
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )        
