@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import KPICard from "../components/KPICard";
+import { useEffect, useState } from "react";
+
 import {
   Box,
   Grid,
@@ -9,6 +9,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
+import KPICard from "../components/KPICard";
 import Header from "../components/Header";
 import MapView from "../components/MapView";
 import SSTChart from "../components/SSTChart";
@@ -27,7 +28,6 @@ import {
 
 export default function Dashboard() {
   const [dataset, setDataset] = useState("2021_lowres.nc");
-
   const [month, setMonth] = useState(1);
 
   const [latitude, setLatitude] = useState(0);
@@ -47,8 +47,9 @@ export default function Dashboard() {
         const data = await getModelMetrics();
         setMetrics(data);
       } catch (error) {
-        console.error(error);
-      }
+        console.error("Unable to load ocean data:", error);
+        alert(error.message);
+}
     }
 
     loadMetrics();
@@ -87,11 +88,11 @@ export default function Dashboard() {
       setForecast(prediction);
       setAnomaly(anomalyData);
     } catch (error) {
-      console.error(error);
+      console.error("Unable to load ocean data:", error);
       alert("Unable to load ocean data.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
@@ -99,10 +100,14 @@ export default function Dashboard() {
       sx={{
         maxWidth: 1500,
         mx: "auto",
-        p: 3,
+        p: {
+          xs: 2,
+          md: 3,
+        },
       }}
     >
       <Header />
+
       <Paper
         elevation={3}
         sx={{
@@ -112,19 +117,27 @@ export default function Dashboard() {
           borderRadius: 3,
         }}
       >
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          gutterBottom
+        >
           OceanCastAI
         </Typography>
 
-        <Typography variant="body1">
-          OceanCastAI is an AI-powered dashboard for exploring global Sea Surface
-          Temperature (SST) data. Users can interactively inspect ocean temperatures,
-          visualize monthly trends, analyze anomalies, and generate machine learning
-          forecasts using a Random Forest model trained on historical satellite data.
+        <Typography
+          variant="body1"
+          color="text.secondary"
+        >
+          OceanCastAI is an AI-powered dashboard for exploring global
+          Sea Surface Temperature (SST) data. Users can interactively
+          inspect ocean temperatures, visualize monthly trends,
+          analyze anomalies, and generate machine learning forecasts
+          using a Random Forest model trained on historical satellite data.
         </Typography>
       </Paper>
 
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ mb: 3 }}>
         <DatasetSelector
           dataset={dataset}
           setDataset={setDataset}
@@ -134,31 +147,39 @@ export default function Dashboard() {
       <Grid
         container
         spacing={3}
-        sx={{ mt: 2 }}
       >
-        <Grid item xs={12} lg={8}>
-          <MapView
-            onLocationSelect={async (location) => {
-              const lat = Number(
-                location.lat.toFixed(2)
-              );
-
-              const lon = Number(
-                location.lng.toFixed(2)
-              );
-
-              setLatitude(lat);
-              setLongitude(lon);
-
-              await loadOceanData(
-                lat,
-                lon
-              );
+        <Grid size={{ xs: 12, lg: 8 }}>
+          <Paper
+            elevation={3}
+            sx={{
+              p: 1,
+              borderRadius: 3,
+              overflow: "hidden",
             }}
-          />
+          >
+            <MapView
+              onLocationSelect={async (location) => {
+                const lat = Number(
+                  location.lat.toFixed(2)
+                );
+
+                const lon = Number(
+                  location.lng.toFixed(2)
+                );
+
+                setLatitude(lat);
+                setLongitude(lon);
+
+                await loadOceanData(
+                  lat,
+                  lon
+                );
+              }}
+            />
+          </Paper>
         </Grid>
 
-        <Grid item xs={12} lg={4}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <KPICard
             title="Current SST"
             value={
@@ -168,7 +189,7 @@ export default function Dashboard() {
             }
             subtitle={
               result
-                ? `${result.latitude}, ${result.longitude}`
+                ? `Lat ${result.latitude}, Lon ${result.longitude}`
                 : "Select a point on the map"
             }
             color="#2196f3"
@@ -189,12 +210,14 @@ export default function Dashboard() {
           <Paper
             elevation={3}
             sx={{
-              mt: 3,
+              mt: 2,
               p: 3,
+              borderRadius: 3,
             }}
           >
             <Typography
               variant="h6"
+              fontWeight="bold"
               gutterBottom
             >
               Controls
@@ -202,6 +225,7 @@ export default function Dashboard() {
 
             <Typography
               variant="body2"
+              color="text.secondary"
               sx={{ mb: 1 }}
             >
               Month
@@ -216,8 +240,10 @@ export default function Dashboard() {
               }
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "12px",
                 borderRadius: "8px",
+                border: "1px solid #ccc",
+                background: "#fff",
               }}
             >
               {[...Array(12)].map(
@@ -235,8 +261,11 @@ export default function Dashboard() {
             <Button
               variant="contained"
               fullWidth
-              disabled ={loading}
-              sx={{ mt: 3 , height: 48,}}
+              disabled={loading}
+              sx={{
+                mt: 3,
+                height: 48,
+              }}
               onClick={() =>
                 loadOceanData(
                   latitude,
@@ -244,14 +273,13 @@ export default function Dashboard() {
                 )
               }
             >
-              {loading?(
-                <Circularprogress 
+              {loading ? (
+                <CircularProgress
                   size={24}
-                  color ="inherit"
+                  color="inherit"
                 />
-              ):(
+              ) : (
                 "Refresh Data"
-          
               )}
             </Button>
           </Paper>

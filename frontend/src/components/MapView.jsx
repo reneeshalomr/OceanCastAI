@@ -1,4 +1,10 @@
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents,
+} from "react-leaflet";
+
 import { useState } from "react";
 import L from "leaflet";
 
@@ -20,12 +26,19 @@ function ClickMarker({ onLocationSelect }) {
 
   useMapEvents({
     click(e) {
+      console.log("Map clicked:", e.latlng);
+
       setPosition(e.latlng);
-      onLocationSelect(e.latlng);
+
+      if (onLocationSelect) {
+        onLocationSelect(e.latlng);
+      }
     },
   });
 
-  return position ? <Marker position={position} /> : null;
+  return position ? (
+    <Marker position={position} />
+  ) : null;
 }
 
 export default function MapView({ onLocationSelect }) {
@@ -36,7 +49,7 @@ export default function MapView({ onLocationSelect }) {
       style={{
         height: "650px",
         width: "100%",
-        borderRadius: "12px",
+        borderRadius: "14px",
       }}
     >
       <TileLayer
@@ -44,7 +57,9 @@ export default function MapView({ onLocationSelect }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <ClickMarker onLocationSelect={onLocationSelect} />
+      <ClickMarker
+        onLocationSelect={onLocationSelect}
+      />
     </MapContainer>
   );
 }

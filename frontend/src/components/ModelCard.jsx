@@ -45,10 +45,7 @@ export default function ModelCard({ metrics }) {
             color="secondary"
           />
 
-          <Chip
-            label={`R² Score: ${metrics.r2}`}
-            color="warning"
-          />
+          
         </Stack>
       </CardContent>
     </Card>

@@ -9,7 +9,7 @@ export default function KPICard({
   return (
     <Card
       sx={{
-        height: "100%",
+        
         borderLeft: `6px solid ${color}`,
         borderRadius: 3,
       }}
