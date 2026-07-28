@@ -34,7 +34,7 @@ export default function MapView({ onLocationSelect }) {
       center={[20, 0]}
       zoom={2}
       style={{
-        height: "500px",
+        height: "650px",
         width: "100%",
         borderRadius: "12px",
       }}

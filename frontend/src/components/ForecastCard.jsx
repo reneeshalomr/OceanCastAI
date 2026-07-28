@@ -1,64 +1,62 @@
-export default function ForecastCard({ forecast }) {
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+} from "@mui/material";
 
-  if (!forecast) {
-    return null;
-  }
+export default function ForecastCard({ forecast }) {
+  if (!forecast) return null;
 
   return (
-    <div
-      style={{
-        marginTop: "20px",
-        padding: "20px",
-        borderRadius: "12px",
-        background: "#f8fbff",
-        boxShadow: "0 4px 12px rgba(0,0,0,.1)"
+    <Card
+      elevation={3}
+      sx={{
+        mt: 2,
+        borderRadius: 3,
       }}
     >
+      <CardContent>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          gutterBottom
+        >
+          AI Forecast
+        </Typography>
 
-      <h2>
-        🤖 AI SST Forecast
-      </h2>
+        <Divider sx={{ mb: 2 }} />
 
+        <Typography>
+          <strong>Current SST:</strong>{" "}
+          {forecast.current_sst} °C
+        </Typography>
 
-      <p>
-        <strong>Current SST:</strong>{" "}
-        {forecast.current_sst} °C
-      </p>
+        <Typography>
+          <strong>Forecast SST:</strong>{" "}
+          {forecast.forecast_sst} °C
+        </Typography>
 
+        <Typography>
+          <strong>Change:</strong>{" "}
+          {forecast.change} °C
+        </Typography>
 
-      <p>
-        <strong>Predicted SST:</strong>{" "}
-        {forecast.forecast_sst} °C
-      </p>
+        <Typography>
+          <strong>Trend:</strong>{" "}
+          {forecast.trend}
+        </Typography>
 
+        <Typography>
+          <strong>Confidence:</strong>{" "}
+          {(forecast.confidence * 100).toFixed(0)}%
+        </Typography>
 
-      <p>
-        <strong>Change:</strong>{" "}
-        {forecast.change > 0 ? "+" : ""}
-        {forecast.change} °C
-      </p>
-
-
-      <p>
-        <strong>Trend:</strong>{" "}
-        {forecast.trend === "Cooling" && "❄️ "}
-        {forecast.trend === "Warming" && "🔥 "}
-        {forecast.trend === "Stable" && "➖ "}
-        {forecast.trend}
-      </p>
-
-
-      <p>
-        <strong>Confidence:</strong>{" "}
-        {(forecast.confidence * 100).toFixed(0)}%
-      </p>
-
-
-      <p>
-        <strong>Model:</strong>{" "}
-        {forecast.model}
-      </p>
-
-    </div>
+        <Typography sx={{ mt: 1 }}>
+          <strong>Model:</strong>{" "}
+          {forecast.model}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }

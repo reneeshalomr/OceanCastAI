@@ -1,72 +1,56 @@
-export default function ModelCard({ metrics }) {
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Chip,
+  Stack,
+} from "@mui/material";
 
-  if (!metrics) {
-    return null;
-  }
+export default function ModelCard({ metrics }) {
+  if (!metrics) return null;
 
   return (
-    <div
-      style={{
-        marginTop: "20px",
-        padding: "20px",
-        background: "#ffffff",
-        borderRadius: "12px",
-        boxShadow: "0 4px 12px rgba(0,0,0,.1)"
+    <Card
+      elevation={3}
+      sx={{
+        mt: 2,
+        borderRadius: 3,
       }}
     >
+      <CardContent>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          gutterBottom
+        >
+          Model Performance
+        </Typography>
 
-      <h2>
-        🧠 AI Model Performance
-      </h2>
+        <Divider sx={{ mb: 2 }} />
 
-      <p>
-        <strong>Model:</strong>{" "}
-        {metrics.model}
-      </p>
+        <Stack spacing={1}>
+          <Chip
+            label={`Model: ${metrics.model}`}
+            color="primary"
+          />
 
-      <p>
-        <strong>Algorithm:</strong>{" "}
-        {metrics.algorithm}
-      </p>
+          <Chip
+            label={`RMSE: ${metrics.rmse}`}
+            color="success"
+          />
 
-      <p>
-        <strong>Dataset:</strong>{" "}
-        NASA MUR Sea Surface Temperature
-      </p>
+          <Chip
+            label={`MAE: ${metrics.mae}`}
+            color="secondary"
+          />
 
-      <p>
-        <strong>Training Period:</strong>{" "}
-        2004 - 2025
-      </p>
-
-      <p>
-        <strong>Training Samples:</strong>{" "}
-        {metrics.samples.toLocaleString()}
-      </p>
-
-      <p>
-        <strong>Mean Absolute Error:</strong>{" "}
-        {metrics.mae} °C
-      </p>
-
-      <p>
-        <strong>Root Mean Square Error:</strong>{" "}
-        {metrics.rmse} °C
-      </p>
-
-      <hr />
-
-      <p
-        style={{
-          fontSize: "14px",
-          color: "#555"
-        }}
-      >
-        The model predicts sea surface temperature using
-        historical ocean observations, geographic location,
-        and seasonal patterns.
-      </p>
-
-    </div>
+          <Chip
+            label={`R² Score: ${metrics.r2}`}
+            color="warning"
+          />
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }

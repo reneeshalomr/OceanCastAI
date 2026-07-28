@@ -1,54 +1,60 @@
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+} from "@mui/material";
+
 export default function AnomalyCard({ anomaly }) {
-
-  if (!anomaly) {
-    return null;
-  }
-
+  if (!anomaly) return null;
 
   return (
-    <div
-      style={{
-        marginTop: "20px",
-        padding: "20px",
-        background: "#ffffff",
-        borderRadius: "12px",
-        boxShadow: "0 4px 12px rgba(0,0,0,.1)"
+    <Card
+      elevation={3}
+      sx={{
+        mt: 2,
+        borderRadius: 3,
       }}
     >
+      <CardContent>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          gutterBottom
+        >
+          SST Anomaly
+        </Typography>
 
-      <h2>
-        🌎 SST Anomaly
-      </h2>
+        <Divider sx={{ mb: 2 }} />
 
+        <Typography>
+          <strong>Mean SST:</strong>{" "}
+          {anomaly.mean_sst} °C
+        </Typography>
 
-      <p>
-        <strong>Mean SST:</strong>{" "}
-        {anomaly.mean_sst} °C
-      </p>
+        <Typography>
+          <strong>Minimum:</strong>{" "}
+          {anomaly.min_anomaly} °C
+        </Typography>
 
+        <Typography>
+          <strong>Maximum:</strong>{" "}
+          {anomaly.max_anomaly} °C
+        </Typography>
 
-      <p>
-        <strong>Lowest Anomaly:</strong>{" "}
-        {anomaly.min_anomaly} °C
-      </p>
+        <Typography>
+          <strong>Average:</strong>{" "}
+          {anomaly.average_anomaly} °C
+        </Typography>
 
-
-      <p>
-        <strong>Highest Anomaly:</strong>{" "}
-        {anomaly.max_anomaly} °C
-      </p>
-
-
-      <p>
-        <strong>Average Anomaly:</strong>{" "}
-        {anomaly.average_anomaly} °C
-      </p>
-
-
-      <p>
-        Compared with the dataset average temperature.
-      </p>
-
-    </div>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: 2 }}
+        >
+          Sea surface temperature anomaly relative to the dataset mean.
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }

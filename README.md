@@ -1,57 +1,68 @@
 # 🌊 OceanCastAI
 
-OceanCastAI is an AI-powered ocean forecasting platform built with FastAPI, xarray, and NASA MUR Sea Surface Temperature (SST) datasets.
+OceanCastAI is an AI-powered web application for exploring global Sea Surface Temperature (SST) data using satellite observations and machine learning.
 
 ## Features
 
-- Load NASA MUR NetCDF datasets
-- Query SST at any latitude and longitude
-- Retrieve annual SST time series
-- Metadata API
-- RESTful FastAPI backend
-- Interactive API documentation
-- AI forecasting (coming soon)
+- 🌍 Interactive world map
+- 📍 Click any location to retrieve SST
+- 📈 Monthly SST trend visualization
+- 🤖 AI SST forecasting using Random Forest
+- 🌡 SST anomaly analysis
+- 📊 Model performance metrics
+- 📅 Multi-year dataset support
+- ⚡ FastAPI backend
+- ⚛ React + Material UI frontend
 
 ## Tech Stack
 
-- Python
+### Backend
 - FastAPI
-- xarray
+- Xarray
 - NumPy
 - Pandas
-- Plotly
-- React (coming soon)
+- Scikit-learn
 
-## Project Structure
+### Frontend
+- React
+- Material UI
+- Recharts
+- React Leaflet
 
+## Machine Learning
+
+Random Forest Regressor trained on historical SST observations using:
+
+- Year
+- Month
+- Latitude
+- Longitude
+
+Outputs:
+
+- Forecast SST
+- Trend
+- Confidence
+
+## Screenshots
+
+(Add screenshots here)
+
+## Running
+
+Backend
+
+```bash
+uvicorn backend.app.main:app --reload
 ```
-OceanCastAI/
-├── backend/
-├── frontend/
-├── data/
-├── docs/
-├── ml/
-└── tests/
+
+Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-
-## Current API
-
-| Endpoint | Description |
-|----------|-------------|
-| `/health` | Health check |
-| `/datasets` | List available datasets |
-| `/sst/{filename}/metadata` | Dataset metadata |
-| `/sst/{filename}/point` | SST at a location |
-| `/sst/{filename}/timeseries` | 12-month SST time series |
-
-## Future Work
-
-- Interactive global SST map
-- Machine learning forecasting
-- Climate anomaly detection
-- Docker deployment
-- Cloud hosting
-- User authentication
 
 ## Author
 
