@@ -6,6 +6,17 @@ OceanCastAI enables users to explore ocean temperature patterns, analyze anomali
 
 ---
 
+## 🚀 Live Demo
+
+**Web Application:**  
+https://oceancastai-d3nffiklj-renee3.vercel.app
+
+**FastAPI Documentation:**  
+https://oceancastai-backend.onrender.com/docs
+
+**Backend API:**  
+https://oceancastai-backend.onrender.com
+
 ## Features
 
 - 🌍 Interactive global map using Leaflet
