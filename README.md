@@ -1,5 +1,7 @@
 # 🌊 OceanCastAI
 
+![CI](https://github.com/reneeshalomr/OceanCastAI/actions/workflows/ci.yml/badge.svg)
+
 An AI-powered full-stack web application for exploring and forecasting global Sea Surface Temperature (SST) using satellite observations, machine learning, and interactive geospatial visualization.
 
 OceanCastAI enables users to explore ocean temperature patterns, analyze anomalies, visualize historical trends, and generate AI-based forecasts through an intuitive web interface.
