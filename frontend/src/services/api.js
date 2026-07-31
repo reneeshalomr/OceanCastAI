@@ -50,10 +50,14 @@ export async function getModelMetrics(){
 
 }
 
-export async function getAnomaly(dataset){
-
+export async function getAnomaly(
+  dataset,
+  month,
+  lat,
+  lon
+) {
   const res = await fetch(
-    `${API}/sst/${dataset}/anomaly`
+    `${API}/sst/${dataset}/anomaly?month=${month}&lat=${lat}&lon=${lon}`
   );
 
   if (!res.ok) {

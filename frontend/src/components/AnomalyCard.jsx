@@ -3,6 +3,7 @@ import {
   CardContent,
   Typography,
   Divider,
+  Chip,
 } from "@mui/material";
 
 export default function AnomalyCard({ anomaly }) {
@@ -28,31 +29,39 @@ export default function AnomalyCard({ anomaly }) {
         <Divider sx={{ mb: 2 }} />
 
         <Typography>
-          <strong>Mean SST:</strong>{" "}
-          {anomaly.mean_sst} °C
+          <strong>Current SST:</strong>{" "}
+          {anomaly.current_sst} °C
         </Typography>
 
         <Typography>
-          <strong>Minimum:</strong>{" "}
-          {anomaly.min_anomaly} °C
+          <strong>Climatological SST:</strong>{" "}
+          {anomaly.climatology_sst} °C
         </Typography>
 
         <Typography>
-          <strong>Maximum:</strong>{" "}
-          {anomaly.max_anomaly} °C
+          <strong>Anomaly:</strong>{" "}
+          {anomaly.anomaly > 0 ? "+" : ""}
+          {anomaly.anomaly} °C
         </Typography>
 
-        <Typography>
-          <strong>Average:</strong>{" "}
-          {anomaly.average_anomaly} °C
-        </Typography>
+        <Chip
+          label={anomaly.category}
+          sx={{ mt: 2 }}
+          color={
+            anomaly.anomaly > 0.25
+              ? "warning"
+              : anomaly.anomaly < -0.25
+              ? "info"
+              : "success"
+          }
+        />
 
         <Typography
           variant="body2"
           color="text.secondary"
           sx={{ mt: 2 }}
         >
-          Sea surface temperature anomaly relative to the dataset mean.
+          Baseline: {anomaly.baseline}
         </Typography>
       </CardContent>
     </Card>

@@ -75,11 +75,41 @@ https://oceancastai-backend.onrender.com
 - Pandas
 - Scikit-learn
 
-### Machine Learning
+## Machine Learning
 
-- Random Forest Regressor
-- Feature Engineering
-- Historical SST Prediction
+OceanCastAI uses a Random Forest Regressor trained on 1.52 million sampled SST observations spanning 2005–2025.
+
+### Features
+
+- Year
+- Month
+- Latitude
+- Longitude
+
+### Temporal Evaluation
+
+To prevent information leakage between historical and future observations, the dataset uses a chronological holdout strategy:
+
+- Training: 2005–2021 — 1,040,000 samples
+- Validation: 2022–2023 — 240,000 samples
+- Test: 2024–2025 — 240,000 samples
+
+### Performance
+
+| Split | MAE | RMSE |
+|---|---:|---:|
+| Validation | 0.532 °C | 0.808 °C |
+| Test | 0.551 °C | 0.823 °C |
+
+Forecast uncertainty is estimated from the distribution of predictions across individual Random Forest trees rather than using a hard-coded confidence score.
+
+## Climatological Anomaly Analysis
+
+SST anomalies are calculated relative to a monthly 2004–2025 climatology at the same latitude and longitude:
+
+`SST anomaly = observed monthly SST - climatological monthly SST`
+
+This allows OceanCastAI to classify locations as warmer, cooler, or near normal relative to their historical monthly baseline.
 
 ---
 

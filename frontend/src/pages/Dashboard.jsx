@@ -80,7 +80,10 @@ export default function Dashboard() {
       );
 
       const anomalyData = await getAnomaly(
-        dataset
+        dataset,
+        month,
+        lat,
+        lon
       );
 
       setResult(point);

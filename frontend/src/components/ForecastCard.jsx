@@ -47,10 +47,21 @@ export default function ForecastCard({ forecast }) {
           {forecast.trend}
         </Typography>
 
-        <Typography>
-          <strong>Confidence:</strong>{" "}
-          {(forecast.confidence * 100).toFixed(0)}%
-        </Typography>
+        {forecast.prediction_std !== undefined && (
+          <Typography>
+            <strong>Prediction Std Dev:</strong>{" "}
+            {forecast.prediction_std} °C
+          </Typography>
+        )}
+
+        {forecast.prediction_interval_95 && (
+          <Typography>
+            <strong>95% Prediction Interval:</strong>{" "}
+            {forecast.prediction_interval_95.lower} °C
+            {" - "}
+            {forecast.prediction_interval_95.upper} °C
+          </Typography>
+        )}
 
         <Typography sx={{ mt: 1 }}>
           <strong>Model:</strong>{" "}

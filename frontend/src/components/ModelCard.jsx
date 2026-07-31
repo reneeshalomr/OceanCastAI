@@ -31,21 +31,30 @@ export default function ModelCard({ metrics }) {
 
         <Stack spacing={1}>
           <Chip
-            label={`Model: ${metrics.model}`}
+            label={metrics.model}
             color="primary"
           />
 
           <Chip
-            label={`RMSE: ${metrics.rmse}`}
-            color="success"
+            label={`Test MAE: ${metrics.test_mae} °C`}
           />
 
           <Chip
-            label={`MAE: ${metrics.mae}`}
-            color="secondary"
+            label={`Test RMSE: ${metrics.test_rmse} °C`}
           />
 
-          
+          <Chip
+            label={`Train: ${metrics.training_period}`}
+          />
+
+          <Chip
+            label={`Test: ${metrics.test_period}`}
+          />
+
+          <Chip
+            label="Temporal Holdout"
+            color="success"
+          />
         </Stack>
       </CardContent>
     </Card>

@@ -53,3 +53,8 @@ frontend/dist/
 
 # Backend generated data
 backend/data/
+
+# Large ML/data files
+ml/training_data_full.csv
+ml/model_metrics.csv
+backend/data/*.nc

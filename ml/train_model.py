@@ -1,103 +1,195 @@
-import pandas as pd
-from pathlib import Path
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error, mean_squared_error
 import joblib
+import pandas as pd
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 
-DATA_FILE = Path("ml/training_data.csv")
-MODEL_FILE = Path("ml/saved_models/sst_model.joblib")
+print("Loading training data...")
+
+df = pd.read_csv("training_data_full.csv")
+
+print(df.head())
+print(f"\nTotal samples: {len(df):,}")
 
 
-def main():
+# --------------------------------------------------
+# TIME-BASED SPLIT
+# --------------------------------------------------
+# Train:      2005-2021
+# Validation: 2022-2023
+# Test:       2024-2025
+# --------------------------------------------------
 
-    print("Loading training data...")
+train_df = df[df["year"] <= 2021]
 
-    df = pd.read_csv(DATA_FILE)
+val_df = df[
+    (df["year"] >= 2022) &
+    (df["year"] <= 2023)
+]
 
-    print(df.head())
-
-    # Features
-    X = df[
-        [
-            "year",
-            "month",
-            "lat",
-            "lon"
-        ]
-    ]
-
-    # Target
-    y = df["sst"]
+test_df = df[df["year"] >= 2024]
 
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42
-    )
+features = [
+    "year",
+    "month",
+    "lat",
+    "lon",
+]
+
+target = "sst"
 
 
-    print("Training Random Forest...")
+X_train = train_df[features]
+y_train = train_df[target]
 
-    model = RandomForestRegressor(
-        n_estimators=100,
-        random_state=42,
-        n_jobs=-1
-    )
+X_val = val_df[features]
+y_val = val_df[target]
 
-
-    model.fit(
-        X_train,
-        y_train
-    )
+X_test = test_df[features]
+y_test = test_df[target]
 
 
-    print("Evaluating model...")
+print("\nDataset split:")
+print(f"Training samples:   {len(train_df):,}")
+print(f"Validation samples: {len(val_df):,}")
+print(f"Test samples:       {len(test_df):,}")
 
 
-    predictions = model.predict(
-        X_test
-    )
+print("\nTraining Random Forest...")
+
+model = RandomForestRegressor(
+    n_estimators=100,
+    random_state=42,
+    n_jobs=-1,
+)
+
+model.fit(
+    X_train,
+    y_train,
+)
 
 
-    mae = mean_absolute_error(
-        y_test,
-        predictions
-    )
+# --------------------------------------------------
+# VALIDATION
+# --------------------------------------------------
 
-    rmse = mean_squared_error(
-        y_test,
-        predictions
+print("\nEvaluating validation set...")
+
+val_predictions = model.predict(
+    X_val
+)
+
+val_mae = mean_absolute_error(
+    y_val,
+    val_predictions
+)
+
+val_rmse = (
+    mean_squared_error(
+        y_val,
+        val_predictions
     ) ** 0.5
+)
 
 
-    print(
-        f"MAE: {mae:.3f} °C"
-    )
+print(
+    f"Validation MAE : "
+    f"{val_mae:.3f} °C"
+)
 
-    print(
-        f"RMSE: {rmse:.3f} °C"
-    )
-
-
-    MODEL_FILE.parent.mkdir(
-        exist_ok=True
-    )
+print(
+    f"Validation RMSE: "
+    f"{val_rmse:.3f} °C"
+)
 
 
-    joblib.dump(
-        model,
-        MODEL_FILE
-    )
+# --------------------------------------------------
+# FINAL TEST
+# --------------------------------------------------
+
+print("\nEvaluating test set...")
+
+test_predictions = model.predict(
+    X_test
+)
+
+test_mae = mean_absolute_error(
+    y_test,
+    test_predictions
+)
+
+test_rmse = (
+    mean_squared_error(
+        y_test,
+        test_predictions
+    ) ** 0.5
+)
 
 
-    print(
-        f"Saved model: {MODEL_FILE}"
-    )
+print(
+    f"Test MAE : "
+    f"{test_mae:.3f} °C"
+)
+
+print(
+    f"Test RMSE: "
+    f"{test_rmse:.3f} °C"
+)
 
 
-if __name__ == "__main__":
-    main()
+# --------------------------------------------------
+# SAVE MODEL
+# --------------------------------------------------
+
+joblib.dump(
+    model,
+    "sst_model.joblib"
+)
+
+print(
+    "\nSaved model: "
+    "sst_model.joblib"
+)
+
+
+# --------------------------------------------------
+# SAVE METRICS
+# --------------------------------------------------
+
+metrics = {
+    "validation_mae":
+        round(val_mae, 3),
+
+    "validation_rmse":
+        round(val_rmse, 3),
+
+    "test_mae":
+        round(test_mae, 3),
+
+    "test_rmse":
+        round(test_rmse, 3),
+
+    "training_samples":
+        len(train_df),
+
+    "validation_samples":
+        len(val_df),
+
+    "test_samples":
+        len(test_df),
+}
+
+
+pd.DataFrame(
+    [metrics]
+).to_csv(
+    "model_metrics.csv",
+    index=False,
+)
+
+print(
+    "Saved metrics: "
+    "model_metrics.csv"
+)
